@@ -4,9 +4,10 @@ import com.example.jpa.data.dto.ChangeProductNameDto;
 import com.example.jpa.data.dto.ProductDto;
 import com.example.jpa.data.dto.ProductResponseDto;
 import com.example.jpa.service.ProductService;
-import io.swagger.annotations.ApiOperation;
+import com.example.jpa.service.impl.ProductServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductService productService;
+    private final ProductServiceImpl productService;
 
     @GetMapping()
     public ResponseEntity<ProductResponseDto> getProduct(Long number) {
@@ -25,7 +26,7 @@ public class ProductController {
     @PostMapping()
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductDto productDto) {
         ProductResponseDto productResponseDto = productService.saveProduct(productDto);
-        return ResponseEntity.status(HttpStatus.OK).body(productResponseDto);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(productResponseDto);
     }
 
     @PutMapping()
