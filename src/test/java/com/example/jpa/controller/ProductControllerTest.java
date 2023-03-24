@@ -12,6 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.refEq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -52,12 +54,12 @@ class ProductControllerTest {
     @Test
     @DisplayName("Product 데이터 생성 테스트")
     void createProduct() throws Exception {
-        given(productService.saveProduct(new ProductDto("pen", 5000, 2000)))
-                .willReturn(new ProductResponseDto(12315L, "pen", 5000, 2000));
+        given(productService.saveProduct(any()))
+                .willReturn(new ProductResponseDto(1L, "pen", 1000, 2000));
 
         ProductDto productDto = ProductDto.builder()
                 .name("pen")
-                .price(5000)
+                .price(1000)
                 .stock(2000)
                 .build();
 
@@ -75,6 +77,6 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.stock").exists())
                 .andDo(print());
 
-        verify(productService).saveProduct(new ProductDto("pen", 5000, 2000));
+        verify(productService).saveProduct(refEq(productDto));
     }
 }
